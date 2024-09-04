@@ -1,0 +1,99 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@model List<Tarefa>
+
+<link rel="stylesheet" href="~/css/style.css"/>
+
+<div class="d-flex flex-column">
+    <div class="text-center ">
+        <h1 class="display-4">Welcome to or List</h1>
+    </div>
+
+    <div class="m-5">
+
+        <table class="table table-stripped table-houver">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        ID
+                    </th>
+
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        Completed
+                    </th>
+
+                    <th>
+                        Action
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+
+                @{
+                    foreach (var taf in Model)
+                    {
+                        <tr>
+
+                            <form asp-action="formReturn" asp-controller="Home" method="post">
+                            <td class="td-style">
+                                <input type="hidden" name="_id" asp-for="@taf._id" />
+                                    @taf._id
+                            </td>
+
+                            <td class="td-style">
+                                <input name="name" type="hidden" asp-for="@taf.name" />
+                                    @taf.name
+                            </td>
+
+                            <td class="td-style">
+                                <input name="description" type="hidden" asp-for="@taf.description" />
+                                    @taf.description
+                            </td>
+
+                            <td>
+                                <input type="checkbox" name="completed" value="true" @(taf.completed ? "checked" : "") />
+                                <input type="hidden" name="completed" value="false" />
+                            </td>
+
+                            <td>
+
+                                <button class="btn btn-primary" name="action" type="submit" value="updateItem">Update</button>
+                                <button class="btn btn-danger" name="action" type="submit" value="deleteItem">Delete</button>
+
+                            </td>
+                            </form>
+
+
+                        </tr>
+
+
+                    }
+                }
+
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        @ViewBag.Message
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+

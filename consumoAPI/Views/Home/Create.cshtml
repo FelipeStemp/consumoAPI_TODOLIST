@@ -1,0 +1,38 @@
+﻿
+@{
+    ViewData["Title"] = "Create";
+}
+
+@model ConsumoAPI.Models.Tarefa
+
+<form asp-action="formReturn" asp-controller="Home" method="post">
+
+    <label>ID</label>
+    <br />
+    <input class="form-control" asp-for="_id" disabled/>
+    <input type="hidden" asp-for="_id" />
+    <br />
+    <label>Name</label>
+    <input class="form-control" type="text" placeholder="Write a name" asp-for="name" required />
+
+    <label>Description</label>
+    <textarea type="text" asp-for="description" class="form-control" required></textarea>
+
+    <br />
+    <label>Completed</label>
+    <input class="form-check-input" type="checkbox" asp-for="completed" />
+
+    <br />
+    <br />
+    <button class="btn btn-primary" name="action" type="submit" value="createItem">Create</button>
+    <button class="btn btn-primary" name="action" type="submit" value="updateItem">Update</button>
+    <button class="btn btn-danger" name="action" type="submit" value="deleteItem">Delete</button>
+</form>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        @ViewBag.Message
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
