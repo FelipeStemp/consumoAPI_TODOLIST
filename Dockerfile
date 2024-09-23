@@ -1,25 +1,24 @@
-# Use a imagem base do SDK
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+# Use uma imagem base do .NET 7.0 (ou a versão que você está utilizando)
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
-
-# Copie o csproj e restaure dependências
-COPY consumoAPI/consumoAPI.csproj ./consumoAPI/
-WORKDIR /app/consumoAPI
-RUN dotnet restore
-
-# Copie o restante do código e compile
-COPY consumoAPI/. ./consumoAPI/
-RUN dotnet publish -c Release -o out
-
-# Use a imagem do runtime
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
-WORKDIR /app
-COPY --from=build /app/out ./
-
-# Exponha a porta que seu app utiliza
 EXPOSE 80
 EXPOSE 443
 
+# Utilize uma imagem base para build
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+WORKDIR /src
+COPY ["consumoAPI/consumoAPI.csproj", "consumoAPI/"]
+RUN dotnet restore "consumoAPI/consumoAPI.csproj"
+COPY . .
+WORKDIR "/src/consumoAPI"
+RUN dotnet build "consumoAPI.csproj" -c Release -o /app/build
 
-# Comando para iniciar a aplicação
+# Publicar o resultado da build
+FROM build AS publish
+RUN dotnet publish "consumoAPI.csproj" -c Release -o /app/publish
+
+# Imagem final
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "consumoAPI.dll"]
