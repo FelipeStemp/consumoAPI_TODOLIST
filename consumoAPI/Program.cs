@@ -11,7 +11,7 @@ builder.Services.AddHttpClient<Delete>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.WebHost.UseUrls("https://*:443");
+builder.WebHost.UseUrls("http://*:80;https://*:443");
 
 var app = builder.Build();
 

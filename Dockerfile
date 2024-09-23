@@ -17,7 +17,9 @@ WORKDIR /app
 COPY --from=build /app/out ./
 
 # Exponha a porta que seu app utiliza
+EXPOSE 80
 EXPOSE 443
+
 
 # Comando para iniciar a aplicação
 ENTRYPOINT ["dotnet", "consumoAPI.dll"]
